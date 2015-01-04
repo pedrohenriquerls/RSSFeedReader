@@ -1,7 +1,7 @@
 Package.describe({
   name: 'pedrohenriquerls:rssfeedparser',
   summary: 'Simple way to take RSS Feed',
-  version: '0.2',
+  version: '0.0.2',
   git: 'git@github.com:pedrohenriquerls/RSSFeedReader.git'
 });
 

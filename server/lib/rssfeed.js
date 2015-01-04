@@ -2,17 +2,6 @@ var request = Npm.require("request");
 var FeedParser = Npm.require("feedparser");
 var iconv = Npm.require('iconv-lite');
 
-var getParams = function(str) {
-  var params = str.split(';').reduce(function (params, param) {
-    var parts = param.split('=').map(function (part) { return part.trim(); });
-    if (parts.length === 2) {
-      params[parts[0]] = parts[1];
-    }
-    return params;
-  }, {});
-  return params;
-}
-
 rssFeed = function(){}
 
 _.extend(rssFeed, {
@@ -23,11 +12,11 @@ _.extend(rssFeed, {
       var post
       while (post = this.read()) {
         posts[posts.length] = {
-          title: iconv.decode(new Buffer(post.title), "utf-8"),
-          description: post.description,
+          title: iconv.decode(new Buffer(post.title), "UTF-8"),
+          description: iconv.decode(new Buffer(post.description), "UTF-8"),
           pubDate: post.pubdate,
           image: post.image,
-          author: post.author,
+          author: iconv.decode(new Buffer(post.author), "UTF-8"),
           categories: post.categories,
           link: post.link
         }
@@ -54,7 +43,6 @@ _.extend(rssFeed, {
     });
     req.on('response', function(res) {
       if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
-      console.log(res.headers)
 
       res.pipe(feedParser);
     });
